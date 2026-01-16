@@ -6,6 +6,7 @@ STRICT FILTER: ONLY TOP 5 LEAGUES + UCL.
 import logging
 from datetime import datetime, timedelta
 import requests
+from tenacity import retry, stop_after_attempt, wait_exponential
 from .utils import strip_all_urls, api_retry
 
 logger = logging.getLogger(__name__)
@@ -14,18 +15,15 @@ class NewsFetcher:
     SPORTSDB_BASE_URL = "https://www.thesportsdb.com/api/v1/json/3"
     
     # IDs for TheSportsDB:
-    # 4328: Premier League
-    # 4335: La Liga
-    # 4331: Bundesliga
-    # 4332: Serie A
-    # 4334: Ligue 1
-    # 4480: Champions League
+    # 4328: Premier League, 4335: La Liga, 4331: Bundesliga, 
+    # 4332: Serie A, 4334: Ligue 1, 4480: Champions League
     TOP_LEAGUE_IDS = ["4328", "4335", "4331", "4332", "4334", "4480"]
     
     def __init__(self):
         self.session = requests.Session()
         self.session.headers.update({"User-Agent": "FootballBot/1.0"})
     
+    @api_retry
     def fetch(self):
         logger.info("Fetching ONLY Top League news...")
         
@@ -54,6 +52,7 @@ class NewsFetcher:
                 params={"d": date_str, "s": "Soccer"},
                 timeout=20
             )
+            response.raise_for_status()
             data = response.json()
             events = data.get("events")
             
