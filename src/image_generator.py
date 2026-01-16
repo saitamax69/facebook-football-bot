@@ -171,3 +171,8 @@ class ImageGenerator:
         temp_file = tempfile.NamedTemporaryFile(suffix=".png", delete=False)
         img.save(temp_file.name)
         return temp_file.name
+
+# --- THIS WAS MISSING IN THE PREVIOUS MESSAGE ---
+def create_pro_image(headline: str, source: str) -> str:
+    generator = ImageGenerator()
+    return generator.generate(headline, source)
