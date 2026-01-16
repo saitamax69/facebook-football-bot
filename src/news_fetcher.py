@@ -1,101 +1,98 @@
 """
 News fetching module.
-OPTIMIZED FOR FREE MODE (TheSportsDB).
+STRICT FILTER: ONLY TOP 5 LEAGUES + UCL.
 """
 
 import logging
 from datetime import datetime, timedelta
 import requests
-from tenacity import retry, stop_after_attempt, wait_exponential
-
 from .utils import strip_all_urls, api_retry
 
 logger = logging.getLogger(__name__)
 
 class NewsFetcher:
-    # Free API endpoint
     SPORTSDB_BASE_URL = "https://www.thesportsdb.com/api/v1/json/3"
+    
+    # IDs for TheSportsDB:
+    # 4328: Premier League
+    # 4335: La Liga
+    # 4331: Bundesliga
+    # 4332: Serie A
+    # 4334: Ligue 1
+    # 4480: Champions League
+    TOP_LEAGUE_IDS = ["4328", "4335", "4331", "4332", "4334", "4480"]
     
     def __init__(self):
         self.session = requests.Session()
         self.session.headers.update({"User-Agent": "FootballBot/1.0"})
     
-    @api_retry
     def fetch(self):
-        """
-        Fetch strictly from TheSportsDB (Free).
-        """
-        logger.info("Fetching events from TheSportsDB (Free Mode)...")
+        logger.info("Fetching ONLY Top League news...")
         
-        # 1. Try Today
+        # 1. Check Yesterday (For Results - Best Content)
+        yesterday = (datetime.utcnow() - timedelta(days=1)).strftime("%Y-%m-%d")
+        news = self._get_best_match(yesterday, is_result=True)
+        if news: return news
+        
+        # 2. Check Today (Live/Upcoming)
         today = datetime.utcnow().strftime("%Y-%m-%d")
-        data = self._get_events(today)
+        news = self._get_best_match(today, is_result=False)
+        if news: return news
         
-        # 2. If no events today, try Yesterday (for results)
-        if not data:
-            yesterday = (datetime.utcnow() - timedelta(days=1)).strftime("%Y-%m-%d")
-            data = self._get_events(yesterday)
+        # 3. Check Tomorrow (Previews)
+        tomorrow = (datetime.utcnow() + timedelta(days=1)).strftime("%Y-%m-%d")
+        news = self._get_best_match(tomorrow, is_result=False)
+        if news: return news
             
-        if not data:
-            return None
+        logger.warning("No Top League matches found in +/- 1 day window.")
+        return None
 
-        return data
-
-    def _get_events(self, date_str):
+    def _get_best_match(self, date_str, is_result):
         try:
             response = self.session.get(
                 f"{self.SPORTSDB_BASE_URL}/eventsday.php",
                 params={"d": date_str, "s": "Soccer"},
                 timeout=20
             )
-            response.raise_for_status()
             data = response.json()
             events = data.get("events")
             
-            if not events:
+            if not events: return None
+            
+            # STRICT FILTER: Only keep events from our Top League list
+            top_events = [e for e in events if e.get("idLeague") in self.TOP_LEAGUE_IDS]
+            
+            if not top_events:
                 return None
             
-            # Filter for a "Major" league if possible, or just take the first completed one
-            # We prefer matches that have a score
-            best_event = None
-            
-            for event in events:
-                league = event.get("strLeague", "")
-                home_team = event.get("strHomeTeam", "")
-                away_team = event.get("strAwayTeam", "")
+            # Pick the best one (prioritize matches with scores if looking for results)
+            for event in top_events:
+                home = event.get("strHomeTeam", "")
+                away = event.get("strAwayTeam", "")
                 home_score = event.get("intHomeScore")
                 away_score = event.get("intAwayScore")
+                league = event.get("strLeague", "Football")
                 
-                if not home_team or not away_team:
-                    continue
-
-                # Clean strings
-                home_team = strip_all_urls(home_team)
-                away_team = strip_all_urls(away_team)
+                if not home or not away: continue
                 
-                # Format Headline Professionaly
+                # Format Data
                 if home_score is not None and away_score is not None:
-                    # Result: "Arsenal 2 - 1 Chelsea"
-                    headline = f"{home_team} {home_score} - {away_score} {away_team}"
-                    status = "FT" # Full Time
-                    summary = f"FULL TIME in the {league}.\n{home_team} finishes with {home_score}, while {away_team} ends with {away_score}."
-                    best_event = {"headline": headline, "summary": summary, "source_name": league, "status": status}
-                    break # Stop at the first finished match (usually the most relevant)
-                else:
-                    # Upcoming: "Arsenal vs Chelsea"
-                    headline = f"{home_team} vs {away_team}"
-                    status = "UPCOMING"
-                    summary = f"MATCH PREVIEW: {home_team} takes on {away_team} in the {league}."
-                    # Keep searching for a finished match, but keep this as backup
-                    if not best_event:
-                        best_event = {"headline": headline, "summary": summary, "source_name": league, "status": status}
-
-            return best_event
+                    # It's a Result
+                    headline = f"{home} {home_score}-{away_score} {away}"
+                    summary = f"FULL TIME in the {league}. {home} vs {away} ended {home_score}-{away_score}."
+                    return {"headline": headline, "summary": summary, "source_name": league}
+                
+                elif not is_result:
+                    # It's a Preview
+                    headline = f"{home} vs {away}"
+                    summary = f"BIG MATCH PREVIEW: {home} take on {away} in the {league}."
+                    return {"headline": headline, "summary": summary, "source_name": league}
+            
+            return None
 
         except Exception as e:
-            logger.error(f"SportsDB Error: {e}")
+            logger.error(f"Error fetching: {e}")
             return None
 
 def fetch_football_news():
-    fetcher = NewsFetcher()
-    return fetcher.fetch()
+    return NewsFetcher().fetch()
