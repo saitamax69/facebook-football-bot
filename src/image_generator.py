@@ -1,6 +1,6 @@
 """
 Professional Scoreboard Generator.
-Uses System Fonts to guarantee size and readability.
+Uses System Fonts to guarantee size and readability on GitHub Actions.
 """
 
 import logging
@@ -22,7 +22,7 @@ class ImageGenerator:
         try:
             return ImageFont.truetype(self.font_path, size)
         except OSError:
-            # Fallback for local testing (Windows/Mac) if DejaVu isn't there
+            # Fallback if specific font not found (rare on Ubuntu)
             return ImageFont.load_default()
 
     def generate(self, headline: str, league_name: str) -> str:
