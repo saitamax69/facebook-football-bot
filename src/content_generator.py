@@ -1,43 +1,39 @@
 """
 Content generation module.
-OPTIMIZED FOR FREE MODE (No OpenAI).
+Free Mode - Template Based.
 """
 
 import logging
 import random
-from .utils import strip_all_urls
 
 logger = logging.getLogger(__name__)
 
 class ContentGenerator:
     def generate(self, headline: str, summary: str) -> dict:
-        """
-        Generate post content using smart templates.
-        """
-        headline = strip_all_urls(headline)
-        summary = strip_all_urls(summary)
         
-        # Detect if it's a Score or a Preview
+        # Detect context
         is_result = any(char.isdigit() for char in headline) and "-" in headline
         
         if is_result:
-            # Result Templates
+            # It's a score (e.g., Man City 3-1 Man Utd)
             templates = [
-                f"⚽ FULL TIME!\n\n{headline}\n\n{summary}\n\n👇 What did you think of the performance?",
-                f"🔥 MATCH RESULT\n\n{headline}\n\n{summary}\n\n💬 Drop your reaction below!",
-                f"🏆 FINAL SCORE\n\n{headline}\n\n{summary}\n\n⭐ Who was your Man of the Match?"
+                f"🚨 FINAL SCORE UPDATE\n\n{headline}\n\nWhat a game! 🔥\n\n👇 Drop your thoughts in the comments!",
+                f"⚽ FULL TIME\n\n{headline}\n\nWho was your Man of the Match? ⭐",
+                f"🔥 MATCH RESULT\n\n{headline}\n\nRate this match from 1-10! 👇"
             ]
-            hashtags = "#Football #Soccer #MatchDay #Results #FullTime"
+            hashtags = "#Football #Soccer #PremierLeague #UCL #Results"
         else:
-            # News/Preview Templates
+            # It's a preview (e.g. Man City vs Man Utd)
             templates = [
-                f"📅 MATCH PREVIEW\n\n{headline}\n\n{summary}\n\n👇 Who do you think will win?",
-                f"⚽ UPCOMING MATCH\n\n{headline}\n\n{summary}\n\n🔮 Predict the score in the comments!",
-                f"📢 FOOTBALL NEWS\n\n{headline}\n\n{summary}\n\n🔥 Are you ready for this match?"
+                f"📅 BIG MATCH COMING UP\n\n{headline}\n\n👇 Who are you backing to win?",
+                f"⚽ MATCHDAY\n\n{headline}\n\n🔮 Predict the score below!",
+                f"🔥 UPCOMING CLASH\n\n{headline}\n\nAre you ready? 💪"
             ]
-            hashtags = "#Football #Soccer #UpcomingMatch #Predictions"
+            hashtags = "#Football #Soccer #MatchDay #Predictions"
 
         post_text = random.choice(templates)
+        
+        # Simple clean caption
         caption = f"{post_text}\n\n{hashtags}"
         
         return {
