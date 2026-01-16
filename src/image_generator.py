@@ -1,12 +1,11 @@
 """
-Professional Dynamic Image Generator.
-Features: League-specific themes, pattern backgrounds, and team avatars.
+Premium Broadcast Image Generator.
+Style: Professional Sports Dark Mode (ESPN/Sky Style)
 """
 
 import logging
 import textwrap
 import tempfile
-import random
 import hashlib
 from PIL import Image, ImageDraw, ImageFont
 
@@ -16,17 +15,17 @@ class ImageGenerator:
     def __init__(self):
         self.width = 1080
         self.height = 1080
-        # System font path (Guaranteed on GitHub Actions/Ubuntu)
+        # Standard Ubuntu font path for GitHub Actions
         self.font_path = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
         
-        # --- THEMES: Colors for specific leagues ---
+        # Professional League Color Palettes
         self.THEMES = {
-            "premier":    {"bg_top": (56, 0, 60),    "bg_bot": (0, 255, 133), "accent": (255, 255, 255)}, # EPL Purple/Neon
-            "champions":  {"bg_top": (10, 20, 60),   "bg_bot": (0, 0, 30),    "accent": (255, 0, 100)},   # UCL Midnight
-            "liga":       {"bg_top": (255, 75, 0),   "bg_bot": (20, 20, 20),  "accent": (255, 255, 0)},   # La Liga Orange
-            "bundes":     {"bg_top": (200, 0, 0),    "bg_bot": (20, 20, 20),  "accent": (255, 255, 255)}, # Bundesliga Red
-            "serie":      {"bg_top": (0, 100, 200),  "bg_bot": (255, 255, 255), "accent": (0, 255, 0)},   # Serie A Blue
-            "default":    {"bg_top": (15, 23, 42),   "bg_bot": (30, 41, 59),  "accent": (255, 215, 0)},   # Navy/Gold
+            "premier":    {"accent": (0, 255, 133), "name": "PREMIER LEAGUE"},
+            "champions":  {"accent": (0, 112, 255), "name": "CHAMPIONS LEAGUE"},
+            "liga":       {"accent": (255, 75, 0),  "name": "LA LIGA"},
+            "bundes":     {"accent": (226, 0, 15),  "name": "BUNDESLIGA"},
+            "serie":      {"accent": (0, 140, 255), "name": "SERIE A"},
+            "default":    {"accent": (255, 215, 0), "name": "FOOTBALL UPDATE"},
         }
 
     def _get_font(self, size):
@@ -36,143 +35,100 @@ class ImageGenerator:
             return ImageFont.load_default()
 
     def _get_theme(self, league_name):
-        """Selects colors based on the league name."""
         lname = league_name.lower()
-        if "premier" in lname: return self.THEMES["premier"]
-        if "champions" in lname or "ucl" in lname: return self.THEMES["champions"]
-        if "liga" in lname: return self.THEMES["liga"]
-        if "bundes" in lname: return self.THEMES["bundes"]
-        if "serie" in lname: return self.THEMES["serie"]
+        for key, config in self.THEMES.items():
+            if key in lname:
+                return config
         return self.THEMES["default"]
 
-    def _generate_team_avatar(self, team_name, size=200):
-        """Generates a colored circle with the team's first letter."""
-        # Deterministic color based on team name hash
+    def _draw_team_section(self, draw, team_name, x_center, y_center):
+        """Draws a professional team initial circle and the team name."""
+        # Generate a unique professional color for the team circle
         hash_val = int(hashlib.sha256(team_name.encode('utf-8')).hexdigest(), 16)
-        r = (hash_val & 0xFF0000) >> 16
-        g = (hash_val & 0x00FF00) >> 8
-        b = (hash_val & 0x0000FF)
+        hue_r = (hash_val & 0x7F) + 50  # Muted professional tones
+        hue_g = ((hash_val >> 8) & 0x7F) + 50
+        hue_b = ((hash_val >> 16) & 0x7F) + 50
+
+        # Draw Badge Circle
+        radius = 110
+        draw.ellipse([x_center - radius, y_center - radius, x_center + radius, y_center + radius], 
+                     fill=(hue_r, hue_g, hue_b), outline=(255, 255, 255), width=4)
         
-        # Ensure color isn't too dark or too light
-        r = min(max(r, 50), 220)
-        g = min(max(g, 50), 220)
-        b = min(max(b, 50), 220)
-        
-        img = Image.new('RGBA', (size, size), (0,0,0,0))
-        draw = ImageDraw.Draw(img)
-        
-        # Draw Circle
-        draw.ellipse([0, 0, size, size], fill=(r, g, b), outline=(255,255,255), width=5)
-        
-        # Draw Letter
+        # Draw Initial
         initial = team_name[0].upper()
-        # Find a good font size
-        font_size = int(size * 0.6)
-        font = self._get_font(font_size)
-        
-        # Center the letter
-        draw.text((size//2, size//2), initial, font=font, fill=(255,255,255), anchor="mm")
-        
-        return img
+        draw.text((x_center, y_center - 5), initial, font=self._get_font(100), fill=(255, 255, 255), anchor="mm")
+
+        # Draw Team Name below badge
+        name_lines = textwrap.wrap(team_name.upper(), width=12)
+        y_text = y_center + radius + 50
+        for line in name_lines:
+            draw.text((x_center, y_text), line, font=self._get_font(50), fill=(255, 255, 255), anchor="mm")
+            y_text += 60
 
     def generate(self, headline: str, league_name: str) -> str:
         theme = self._get_theme(league_name)
         
-        # 1. Background Gradient
-        img = Image.new('RGB', (self.width, self.height), color=theme["bg_top"])
+        # 1. Create Base Image (Deep Slate Dark Mode)
+        img = Image.new('RGB', (self.width, self.height), color=(18, 24, 33))
         draw = ImageDraw.Draw(img)
         
-        for y in range(self.height):
-            # Linear interpolation between top and bot colors
-            ratio = y / self.height
-            r = int(theme["bg_top"][0] * (1 - ratio) + theme["bg_bot"][0] * ratio)
-            g = int(theme["bg_top"][1] * (1 - ratio) + theme["bg_bot"][1] * ratio)
-            b = int(theme["bg_top"][2] * (1 - ratio) + theme["bg_bot"][2] * ratio)
-            draw.line([(0, y), (self.width, y)], fill=(r, g, b))
+        # 2. Draw Subtle Background Detail (Right side lighter)
+        for i in range(self.width // 2, self.width):
+            alpha = int((i - self.width // 2) / (self.width // 2) * 15)
+            draw.line([(i, 0), (i, self.height)], fill=(255, 255, 255, alpha))
 
-        # 2. Add subtle pattern (Diagonal lines)
-        for i in range(0, self.width + self.height, 40):
-            draw.line([(i, 0), (0, i)], fill=(255, 255, 255, 20), width=1)
-
-        # 3. Parse Data
-        # Default values
-        home_team = "Home Team"
-        away_team = "Away Team"
-        center_text = "VS"
-        status_text = "MATCHDAY"
-
+        # 3. Parse News Data
+        home_team, away_team, score_text, status = "HOME", "AWAY", "VS", "UPCOMING"
+        
         if "-" in headline and any(c.isdigit() for c in headline):
-            # Result: "Man City 3-1 Arsenal"
             try:
                 parts = headline.split("-")
                 left = parts[0].rsplit(" ", 1)
                 right = parts[1].lstrip().split(" ", 1)
-                home_team = left[0].strip()
-                home_score = left[1].strip()
-                away_score = right[0].strip()
-                away_team = right[1].strip()
-                center_text = f"{home_score} - {away_score}"
-                status_text = "FULL TIME"
+                home_team, home_score = left[0].strip(), left[1].strip()
+                away_score, away_team = right[0].strip(), right[1].strip()
+                score_text = f"{home_score} - {away_score}"
+                status = "FULL TIME"
             except:
-                home_team, away_team = headline.split("-", 1)
+                pass
         elif " vs " in headline:
-            # Preview
-            home_team, away_team = headline.split(" vs ")
-            status_text = "UPCOMING"
+            home_team, away_team = headline.split(" vs ", 1)
+            status = "KICK OFF"
 
+        # 4. Draw Header (League & Status)
+        # Accent Top Bar
+        draw.rectangle([0, 0, self.width, 15], fill=theme["accent"])
+        
+        # Status Pill
+        draw.rectangle([self.width//2 - 140, 60, self.width//2 + 140, 110], fill=(255, 255, 255))
+        draw.text((self.width//2, 82), status, font=self._get_font(35), fill=(0, 0, 0), anchor="mm")
+        
+        # League Name
+        draw.text((self.width//2, 160), theme["name"], font=self._get_font(40), fill=(180, 180, 180), anchor="mm")
+
+        # 5. Draw Central Score Area
+        cy = self.height // 2 - 50
         cx = self.width // 2
-        cy = self.height // 2
-
-        # 4. Draw Layout
         
-        # A. Status Badge (Top)
-        draw.rectangle([(cx-250, 100), (cx+250, 180)], fill=(0, 0, 0, 150))
-        draw.text((cx, 140), status_text, font=self._get_font(40), fill=theme["accent"], anchor="mm")
+        # The Score Box
+        draw.rectangle([cx - 180, cy - 100, cx + 180, cy + 100], fill=(28, 36, 48), outline=(theme["accent"]), width=3)
+        draw.text((cx, cy - 5), score_text, font=self._get_font(150), fill=(255, 255, 255), anchor="mm")
 
-        # B. Center Scoreboard (Glass Effect)
-        # Semi-transparent box in middle
-        overlay = Image.new('RGBA', img.size, (0,0,0,0))
-        draw_over = ImageDraw.Draw(overlay)
-        draw_over.rectangle([(100, cy-120), (self.width-100, cy+120)], fill=(0, 0, 0, 100))
-        img = Image.alpha_composite(img.convert('RGBA'), overlay)
-        draw = ImageDraw.Draw(img)
+        # 6. Draw Team Sections
+        # Home (Left)
+        self._draw_team_section(draw, home_team, cx - 340, cy)
+        # Away (Right)
+        self._draw_team_section(draw, away_team, cx + 340, cy)
 
-        # C. Score/VS
-        draw.text((cx, cy), center_text, font=self._get_font(160), fill=theme["accent"], anchor="mm")
+        # 7. Draw Footer Decor
+        draw.rectangle([0, self.height - 100, self.width, self.height], fill=(12, 16, 23))
+        draw.text((self.width // 2, self.height - 50), "GLOBAL SCORE UPDATES", font=self._get_font(30), fill=(100, 100, 100), anchor="mm")
 
-        # D. Home Team (Left/Top section)
-        # Avatar
-        home_avatar = self._generate_team_avatar(home_team)
-        img.paste(home_avatar, (cx - 350, cy - 350), home_avatar)
-        
-        # Name
-        h_lines = textwrap.wrap(home_team, width=15)
-        y_h = cy - 420
-        for line in reversed(h_lines): # Draw upwards from avatar
-            draw.text((cx - 250, y_h), line, font=self._get_font(60), fill='white', anchor="mm")
-            y_h -= 70
-
-        # E. Away Team (Right/Bottom section)
-        # Avatar
-        away_avatar = self._generate_team_avatar(away_team)
-        img.paste(away_avatar, (cx + 150, cy + 150), away_avatar)
-        
-        # Name
-        a_lines = textwrap.wrap(away_team, width=15)
-        y_a = cy + 400
-        for line in a_lines:
-            draw.text((cx + 250, y_a), line, font=self._get_font(60), fill='white', anchor="mm")
-            y_a += 70
-
-        # F. League Footer
-        draw.text((cx, self.height - 80), league_name.upper(), font=self._get_font(40), fill=(200, 200, 200), anchor="mm")
-
-        # Save
+        # Save to temp file
         temp_file = tempfile.NamedTemporaryFile(suffix=".png", delete=False)
         img.save(temp_file.name)
         return temp_file.name
 
-# --- THIS WAS MISSING IN THE PREVIOUS MESSAGE ---
 def create_pro_image(headline: str, source: str) -> str:
     generator = ImageGenerator()
     return generator.generate(headline, source)
