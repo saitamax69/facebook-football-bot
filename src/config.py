@@ -4,12 +4,12 @@ Configuration settings for Sports Prediction Bot
 import os
 
 # =============================================================================
-# API CONFIGURATION (UPDATED FOR V4)
+# API CONFIGURATION
 # =============================================================================
 RAPIDAPI_KEY = os.environ.get('RAPIDAPI_KEY')
 RAPIDAPI_HOST = 'odds-api1.p.rapidapi.com'
-# IMPORTANT: This is the correct V4 base URL structure for RapidAPI
-API_BASE_URL = 'https://odds-api1.p.rapidapi.com/v4/sports'
+# FIX: Point to root, we will append /v4/sports/... in the code
+API_BASE_URL = 'https://odds-api1.p.rapidapi.com'
 
 # =============================================================================
 # FACEBOOK CONFIGURATION
@@ -33,13 +33,18 @@ RISK_LEVELS = {
 }
 
 # =============================================================================
-# PRIORITY LEAGUES (For display/reference)
+# LEAGUE KEYS (For Fallback)
 # =============================================================================
-PRIORITY_LEAGUES = [
-    'Premier League', 'La Liga', 'Bundesliga', 'Serie A', 'Ligue 1',
-    'Eredivisie', 'Primeira Liga', 'Champions League', 'Europa League',
-    'Championship', 'Super Lig', 'Scottish Premiership', 'Belgian Pro League',
-    'MLS', 'Brasileirao', 'Saudi Pro League', 'A-League', 'J1 League'
+# Since 'upcoming' is 404ing, we will check these keys in order
+LEAGUE_KEYS = [
+    'soccer_epl',             # Premier League
+    'soccer_spain_la_liga',   # La Liga
+    'soccer_uefa_champs_league', # Champions League
+    'soccer_germany_bundesliga', # Bundesliga
+    'soccer_italy_serie_a',   # Serie A
+    'soccer_france_ligue_one', # Ligue 1
+    'soccer_usa_mls',         # MLS (Good for evenings)
+    'soccer_brazil_campeonato' # Brasileirao
 ]
 
 # =============================================================================
