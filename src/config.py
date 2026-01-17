@@ -4,12 +4,13 @@ Configuration settings for Sports Prediction Bot
 import os
 
 # =============================================================================
-# API CONFIGURATION
+# API CONFIGURATION (ESPN - NO KEY REQUIRED)
 # =============================================================================
-RAPIDAPI_KEY = os.environ.get('RAPIDAPI_KEY')
-RAPIDAPI_HOST = 'odds-api1.p.rapidapi.com'
-# FIX: Point to root, we will append /v4/sports/... in the code
-API_BASE_URL = 'https://odds-api1.p.rapidapi.com'
+# We keep these variables so the rest of the code doesn't break, 
+# but they are not used for fetching data anymore.
+RAPIDAPI_KEY = os.environ.get('RAPIDAPI_KEY', 'not_needed')
+RAPIDAPI_HOST = 'site.api.espn.com'
+API_BASE_URL = 'https://site.api.espn.com/apis/site/v2/sports/soccer'
 
 # =============================================================================
 # FACEBOOK CONFIGURATION
@@ -33,18 +34,19 @@ RISK_LEVELS = {
 }
 
 # =============================================================================
-# LEAGUE KEYS (For Fallback)
+# ESPN LEAGUE KEYS
 # =============================================================================
-# Since 'upcoming' is 404ing, we will check these keys in order
-LEAGUE_KEYS = [
-    'soccer_epl',             # Premier League
-    'soccer_spain_la_liga',   # La Liga
-    'soccer_uefa_champs_league', # Champions League
-    'soccer_germany_bundesliga', # Bundesliga
-    'soccer_italy_serie_a',   # Serie A
-    'soccer_france_ligue_one', # Ligue 1
-    'soccer_usa_mls',         # MLS (Good for evenings)
-    'soccer_brazil_campeonato' # Brasileirao
+# These are the codes ESPN uses for their public API
+PRIORITY_LEAGUES = [
+    'eng.1',          # Premier League
+    'esp.1',          # La Liga
+    'ger.1',          # Bundesliga
+    'ita.1',          # Serie A
+    'fra.1',          # Ligue 1
+    'uefa.champions', # Champions League
+    'usa.1',          # MLS
+    'por.1',          # Portuguese Liga
+    'ned.1'           # Eredivisie
 ]
 
 # =============================================================================
