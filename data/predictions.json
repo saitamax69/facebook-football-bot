@@ -1,1 +1,17 @@
-
+{
+  "predictions": [
+    {
+      "id": "pred_20260117191214",
+      "date": "2026-01-17",
+      "post_number": 1,
+      "risk_level": "SAFE",
+      "league": "LEAGUE-PHASE",
+      "home_team": "Kairat Almaty",
+      "away_team": "Club Brugge",
+      "prediction": "Away Win",
+      "odds": 1.36,
+      "fixture_id": "eng.1_757761",
+      "status": "pending"
+    }
+  ]
+}
