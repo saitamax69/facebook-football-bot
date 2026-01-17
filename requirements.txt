@@ -1,19 +1,2 @@
-# Core Dependencies
-requests==2.31.0
-python-dotenv==1.0.0
-APScheduler==3.10.4
-
-# Database
-psycopg2-binary==2.9.9
-
-# Logging & Utilities
-python-dateutil==2.8.2
-pytz==2024.1
-
-# Facebook API (using requests directly for Graph API)
-# No facebook-sdk needed - we use direct Graph API calls
-
-# Optional: For development
-black==24.3.0
-flake8==7.0.0
-pytest==8.1.1
+requests>=2.31.0
+pytz>=2024.1
