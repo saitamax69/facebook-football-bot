@@ -1,5 +1,5 @@
 """
-Odds API Client - V4 COMPATIBLE FIX
+Odds API Client - Fixed for RapidAPI V4 Routing
 """
 import requests
 import time
@@ -9,8 +9,7 @@ import sys
 import os
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from config import RAPIDAPI_KEY, RAPIDAPI_HOST, API_BASE_URL, PRIORITY_LEAGUES
-
+from config import RAPIDAPI_KEY, RAPIDAPI_HOST, API_BASE_URL, LEAGUE_KEYS
 
 class OddsAPIClient:
     """Client for Odds API V4"""
@@ -23,50 +22,61 @@ class OddsAPIClient:
         self.base_url = API_BASE_URL
     
     def get_upcoming_fixtures(self, hours=48):
-        """Fetch all upcoming fixtures via the 'upcoming' endpoint"""
-        print(f"📡 Fetching upcoming fixtures from API...")
+        """
+        Fetch fixtures. 
+        FIX: Iterates through specific top leagues instead of using 'upcoming' endpoint 
+        which returns 404 on some RapidAPI plans.
+        """
+        print(f"📡 Fetching fixtures...")
         
         fixtures = []
         
         if RAPIDAPI_KEY:
-            # FIX: Use V4 path structure: /v4/sports/upcoming/odds
-            endpoint = 'upcoming/odds'
-            params = {
-                'regions': 'eu',
-                'markets': 'h2h',
-                'oddsFormat': 'decimal'
-            }
-            
-            response = self._make_request(endpoint, params)
-            
-            if response and isinstance(response, list):
-                for event in response:
-                    # Filter for Soccer
-                    if event.get('sport_group') == 'Soccer' or 'soccer' in event.get('sport_key', ''):
+            # Try top leagues in order until we find matches
+            # This avoids the 404 error on /upcoming and ensures high quality matches
+            for league_key in LEAGUE_KEYS:
+                print(f"   🔎 Checking {league_key}...")
+                
+                # Correct V4 URL: https://odds-api1.p.rapidapi.com/v4/sports/{sport}/odds
+                endpoint = f'v4/sports/{league_key}/odds'
+                params = {
+                    'regions': 'eu',
+                    'markets': 'h2h',
+                    'oddsFormat': 'decimal'
+                }
+                
+                response = self._make_request(endpoint, params)
+                
+                if response and isinstance(response, list) and len(response) > 0:
+                    print(f"   ✅ Found {len(response)} matches in {league_key}")
+                    for event in response:
                         fixture = self._parse_fixture(event)
                         if fixture:
                             fixtures.append(fixture)
-                print(f"✅ Parsed {len(fixtures)} valid fixtures")
-        
+                    
+                    # If we found fixtures, STOP looking to save API quota
+                    # We only need 1 good match per run
+                    if len(fixtures) > 0:
+                        break
+                else:
+                    # If 404 or empty, just continue to next league
+                    continue
+
         if not fixtures:
-            print("📦 Using sample fixtures (API failed or empty)...")
+            print("📦 No matches found in top leagues (or API error), using samples...")
             fixtures = self._generate_sample_fixtures()
         
         return fixtures
     
     def get_match_result(self, fixture_id):
-        """Fetch match result using league keys logic"""
+        """Fetch match result"""
         print(f"🔍 Fetching result for: {fixture_id}")
         
         if RAPIDAPI_KEY:
-            # Strategies to find score: check common leagues
-            keys = ['soccer_epl', 'soccer_spain_la_liga', 'upcoming', 'soccer_uefa_champs_league']
-            
-            for key in keys:
+            # We iterate likely leagues to find the score
+            for key in LEAGUE_KEYS:
                 try:
-                    endpoint = f'{key}/scores'
-                    if key == 'upcoming': continue
-                    
+                    endpoint = f'v4/sports/{key}/scores'
                     response = self._make_request(endpoint, {'daysFrom': 3})
                     
                     if response and isinstance(response, list):
@@ -75,7 +85,6 @@ class OddsAPIClient:
                                 if event.get('completed'):
                                     scores = event.get('scores', [])
                                     if scores:
-                                        # Parse V4 scores
                                         h_score = 0
                                         a_score = 0
                                         home = event.get('home_team')
@@ -90,6 +99,7 @@ class OddsAPIClient:
                                             'away_score': a_score,
                                             'status': 'finished'
                                         }
+                                return None # Found event but not completed
                 except:
                     continue
         
@@ -99,18 +109,18 @@ class OddsAPIClient:
         """Make API request with retry"""
         url = f"{self.base_url}/{endpoint}"
         
-        for attempt in range(3):
+        for attempt in range(2): # reduced retries to save time on fallback
             try:
-                response = requests.get(url, headers=self.headers, params=params, timeout=30)
+                response = requests.get(url, headers=self.headers, params=params, timeout=15)
                 if response.status_code == 200:
                     return response.json()
+                elif response.status_code == 404:
+                    # Don't retry 404s, just return None so we try next league
+                    return None
                 elif response.status_code == 429:
-                    time.sleep(5)
-                else:
-                    print(f"⚠️ API status: {response.status_code} - {response.text[:50]}")
+                    time.sleep(2)
             except Exception as e:
-                print(f"⚠️ Network error: {e}")
-                time.sleep(2)
+                time.sleep(1)
         return None
     
     def _parse_fixture(self, event):
