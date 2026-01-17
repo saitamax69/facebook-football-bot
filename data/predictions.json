@@ -1,3 +1,17 @@
 {
-  "predictions": []
+  "predictions": [
+    {
+      "id": "pred_20260117185219",
+      "date": "2026-01-17",
+      "post_number": 1,
+      "risk_level": "SAFE",
+      "league": "Bundesliga",
+      "home_team": "Bayern",
+      "away_team": "Dortmund",
+      "prediction": "Home Win",
+      "odds": 1.45,
+      "fixture_id": "sample_3",
+      "status": "pending"
+    }
+  ]
 }
