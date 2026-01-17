@@ -1,4 +1,4 @@
 """
-Sports Prediction Bot - Automated Facebook Predictions
+Sports Prediction Bot V4
 """
-__version__ = "1.0.0"
+__version__ = "4.0.0"
