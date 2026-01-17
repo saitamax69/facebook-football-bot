@@ -1,0 +1,39 @@
+name: 📊 Daily Results
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # 00:00 UTC daily (midnight)
+  workflow_dispatch:
+
+jobs:
+  post-results:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PAT_TOKEN }}
+      
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: 📦 Install Dependencies
+        run: pip install -r requirements.txt
+      
+      - name: 📊 Fetch Results & Post Summary
+        env:
+          RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
+          FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
+          FB_ACCESS_TOKEN: ${{ secrets.FB_ACCESS_TOKEN }}
+        run: python src/post_results.py
+      
+      - name: 💾 Commit Data Updates
+        run: |
+          git config --local user.email "bot@github.com"
+          git config --local user.name "Prediction Bot"
+          git add data/
+          git diff --quiet && git diff --staged --quiet || git commit -m "📊 Update daily results & stats"
+          git push
