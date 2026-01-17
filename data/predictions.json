@@ -35,6 +35,24 @@
       "final_score": null,
       "profit": null,
       "fb_post_id": "957894320737609_122107728033194230"
+    },
+    {
+      "id": "pred_20260117_182906",
+      "date": "2026-01-17",
+      "post_number": 4,
+      "risk_level": "MODERATE",
+      "league": "Premier League",
+      "home_team": "Man City",
+      "away_team": "Liverpool",
+      "prediction": "Home Win",
+      "odds": 1.7,
+      "confidence": 77,
+      "fixture_id": "sample_1_9977",
+      "status": "pending",
+      "result": null,
+      "final_score": null,
+      "profit": null,
+      "fb_post_id": "957894320737609_122107728183194230"
     }
   ]
 }
