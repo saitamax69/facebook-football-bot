@@ -51,6 +51,19 @@
       "odds": 1.31,
       "fixture_id": "eng.1_740806",
       "status": "pending"
+    },
+    {
+      "id": "pred_20260118122559",
+      "date": "2026-01-18",
+      "post_number": 3,
+      "risk_level": "MODERATE",
+      "league": "2025-26-ENGLISH-PREMIER-LEAGUE",
+      "home_team": "Wolverhampton Wanderers",
+      "away_team": "Newcastle United",
+      "prediction": "Home Win",
+      "odds": 1.69,
+      "fixture_id": "eng.1_740815",
+      "status": "pending"
     }
   ]
 }
