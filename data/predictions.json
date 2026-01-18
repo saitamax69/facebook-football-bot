@@ -64,6 +64,19 @@
       "odds": 1.69,
       "fixture_id": "eng.1_740815",
       "status": "pending"
+    },
+    {
+      "id": "pred_20260118151037",
+      "date": "2026-01-18",
+      "post_number": 4,
+      "risk_level": "MODERATE",
+      "league": "2025-26-GERMAN-BUNDESLIGA",
+      "home_team": "FC Augsburg",
+      "away_team": "SC Freiburg",
+      "prediction": "Home Win",
+      "odds": 1.83,
+      "fixture_id": "eng.1_746877",
+      "status": "pending"
     }
   ]
 }
