@@ -38,6 +38,19 @@
       "odds": 1.33,
       "fixture_id": "eng.1_757763",
       "status": "pending"
+    },
+    {
+      "id": "pred_20260118092550",
+      "date": "2026-01-18",
+      "post_number": 2,
+      "risk_level": "SAFE",
+      "league": "2025-26-ENGLISH-PREMIER-LEAGUE",
+      "home_team": "Aston Villa",
+      "away_team": "Everton",
+      "prediction": "Home Win",
+      "odds": 1.31,
+      "fixture_id": "eng.1_740806",
+      "status": "pending"
     }
   ]
 }
