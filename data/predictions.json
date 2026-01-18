@@ -77,6 +77,19 @@
       "odds": 1.83,
       "fixture_id": "eng.1_746877",
       "status": "pending"
+    },
+    {
+      "id": "pred_20260118161640",
+      "date": "2026-01-18",
+      "post_number": 5,
+      "risk_level": "RISKY",
+      "league": "2025-26-ITALIAN-SERIE-A",
+      "home_team": "AC Milan",
+      "away_team": "Lecce",
+      "prediction": "Away Win",
+      "odds": 3.75,
+      "fixture_id": "eng.1_736988",
+      "status": "pending"
     }
   ]
 }
