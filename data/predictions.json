@@ -129,6 +129,19 @@
       "odds": 1.64,
       "fixture_id": "eng.1_757764",
       "status": "pending"
+    },
+    {
+      "id": "pred_20260119151640",
+      "date": "2026-01-19",
+      "post_number": 4,
+      "risk_level": "MODERATE",
+      "league": "LEAGUE-PHASE",
+      "home_team": "F.C. K\u00f8benhavn",
+      "away_team": "Napoli",
+      "prediction": "Home Win",
+      "odds": 1.62,
+      "fixture_id": "eng.1_757767",
+      "status": "pending"
     }
   ]
 }
