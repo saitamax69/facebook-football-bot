@@ -90,6 +90,19 @@
       "odds": 3.75,
       "fixture_id": "eng.1_736988",
       "status": "pending"
+    },
+    {
+      "id": "pred_20260119073149",
+      "date": "2026-01-19",
+      "post_number": 1,
+      "risk_level": "SAFE",
+      "league": "LEAGUE-PHASE",
+      "home_team": "Internazionale",
+      "away_team": "Arsenal",
+      "prediction": "Home Win",
+      "odds": 1.34,
+      "fixture_id": "eng.1_757763",
+      "status": "pending"
     }
   ]
 }
