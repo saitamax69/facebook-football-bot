@@ -103,6 +103,19 @@
       "odds": 1.34,
       "fixture_id": "eng.1_757763",
       "status": "pending"
+    },
+    {
+      "id": "pred_20260119093922",
+      "date": "2026-01-19",
+      "post_number": 2,
+      "risk_level": "SAFE",
+      "league": "LEAGUE-PHASE",
+      "home_team": "Olympiacos",
+      "away_team": "Bayer Leverkusen",
+      "prediction": "Home Win",
+      "odds": 1.31,
+      "fixture_id": "eng.1_757765",
+      "status": "pending"
     }
   ]
 }
