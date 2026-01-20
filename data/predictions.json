@@ -181,6 +181,19 @@
       "odds": 1.33,
       "fixture_id": "eng.1_757768",
       "status": "pending"
+    },
+    {
+      "id": "pred_20260120123256",
+      "date": "2026-01-20",
+      "post_number": 3,
+      "risk_level": "MODERATE",
+      "league": "LEAGUE-PHASE",
+      "home_team": "Bodo/Glimt",
+      "away_team": "Manchester City",
+      "prediction": "Home Win",
+      "odds": 1.7,
+      "fixture_id": "eng.1_757762",
+      "status": "pending"
     }
   ]
 }
