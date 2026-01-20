@@ -194,6 +194,19 @@
       "odds": 1.7,
       "fixture_id": "eng.1_757762",
       "status": "pending"
+    },
+    {
+      "id": "pred_20260120152038",
+      "date": "2026-01-20",
+      "post_number": 4,
+      "risk_level": "MODERATE",
+      "league": "LEAGUE-PHASE",
+      "home_team": "Sporting CP",
+      "away_team": "Paris Saint-Germain",
+      "prediction": "Home Win",
+      "odds": 1.64,
+      "fixture_id": "eng.1_757768",
+      "status": "pending"
     }
   ]
 }
