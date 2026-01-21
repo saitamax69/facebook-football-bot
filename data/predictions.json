@@ -233,6 +233,19 @@
       "odds": 1.62,
       "fixture_id": "eng.1_740819",
       "status": "pending"
+    },
+    {
+      "id": "pred_20260121093730",
+      "date": "2026-01-21",
+      "post_number": 2,
+      "risk_level": "SAFE",
+      "league": "2025-26-ENGLISH-PREMIER-LEAGUE",
+      "home_team": "West Ham United",
+      "away_team": "Sunderland",
+      "prediction": "Away Win",
+      "odds": 1.43,
+      "fixture_id": "eng.1_740825",
+      "status": "pending"
     }
   ]
 }
