@@ -220,6 +220,19 @@
       "odds": 3.92,
       "fixture_id": "eng.1_757763",
       "status": "pending"
+    },
+    {
+      "id": "pred_20260121073152",
+      "date": "2026-01-21",
+      "post_number": 1,
+      "risk_level": "SAFE",
+      "league": "2025-26-ENGLISH-PREMIER-LEAGUE",
+      "home_team": "Burnley",
+      "away_team": "Tottenham Hotspur",
+      "prediction": "Away Win",
+      "odds": 1.62,
+      "fixture_id": "eng.1_740819",
+      "status": "pending"
     }
   ]
 }
