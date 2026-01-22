@@ -311,6 +311,19 @@
       "odds": 1.43,
       "fixture_id": "eng.1_740817",
       "status": "pending"
+    },
+    {
+      "id": "pred_20260122123212",
+      "date": "2026-01-22",
+      "post_number": 3,
+      "risk_level": "MODERATE",
+      "league": "2025-26-ENGLISH-PREMIER-LEAGUE",
+      "home_team": "AFC Bournemouth",
+      "away_team": "Liverpool",
+      "prediction": "Home Win",
+      "odds": 1.64,
+      "fixture_id": "eng.1_740817",
+      "status": "pending"
     }
   ]
 }
