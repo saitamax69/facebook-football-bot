@@ -1,25 +1,31 @@
 """
-Post Generator
+Post Generator for creating Facebook post content
 """
 import sys
 import os
+
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from config import TELEGRAM_LINK, HASHTAGS
 
+
 class PostGenerator:
-    def __init__(self): self.tg = TELEGRAM_LINK
+    """Generates formatted post content"""
+    
+    def __init__(self):
+        self.telegram = TELEGRAM_LINK
+    
+    def generate_safe_bet_post(self, match, analysis, post_num):
+        return self._base_post(match, analysis, '🟢', 'SAFE BET', post_num, 'LOW', 'SAFE')
 
-    def generate_safe_bet_post(self, m, a, num):
-        return self._base_post(m, a, '🟢', 'SAFE BET', num, 'LOW', 'SAFE')
-
-    def generate_value_bet_post(self, m, a, num):
-        return self._base_post(m, a, '🟡', 'VALUE BET', num, 'MEDIUM', 'MODERATE')
+    def generate_value_bet_post(self, match, analysis, post_num):
+        return self._base_post(match, analysis, '🟡', 'VALUE BET', post_num, 'MEDIUM', 'MODERATE')
         
-    def generate_risky_bet_post(self, m, a):
-        return self._base_post(m, a, '🔴', 'HIGH ODDS', 5, 'HIGH', 'RISKY')
+    def generate_risky_bet_post(self, match, analysis):
+        return self._base_post(match, analysis, '🔴', 'HIGH ODDS', 5, 'HIGH', 'RISKY')
 
     def _base_post(self, m, a, emo, title, num, risk, tag_key):
-        tags = ' '.join(HASHTAGS[tag_key][:5] + HASHTAGS['GENERAL'][:5])
+        tags = self._hashtags(tag_key, m['league'], m['home_team'], m['away_team'])
+        
         return f"""{emo}⚽{emo}⚽{emo}⚽{emo}⚽{emo}
 
 {title} #{num}
@@ -50,29 +56,51 @@ class PostGenerator:
 🔒 RISK: {risk} {emo}
 
 📲 MORE FREE TIPS 👇
-🔗 {self.tg}
+🔗 {self.telegram}
 
-{tags} #{m['home_team'].replace(' ','')} #{m['away_team'].replace(' ','')}"""
+{tags}"""
 
-    def generate_results_post(self, preds, stats):
-        res_txt = ""
-        for p in preds:
-            e = '✅' if p['result']=='WIN' else '❌'
-            res_txt += f"\n{e} {p['home_team']} vs {p['away_team']}\nPick: {p['prediction']} ({p['final_score']})\n"
+    def generate_results_post(self, predictions, stats):
+        results_txt = ""
         
-        prof = stats['profit']
-        sign = '+' if prof >= 0 else ''
+        # CRITICAL FIX: Use .get() to avoid KeyError
+        for p in predictions:
+            res = p.get('result', 'PENDING')
+            emoji = '✅' if res == 'WIN' else '❌'
+            
+            results_txt += f"""
+{emoji} {p.get('home_team', 'Home')} vs {p.get('away_team', 'Away')}
+Pick: {p.get('prediction', 'Pick')} ({p.get('final_score', '?-?')})
+"""
+        
+        profit = stats.get('profit', 0)
+        sign = '+' if profit >= 0 else ''
+        wins = stats.get('wins', 0)
+        losses = stats.get('losses', 0)
         
         return f"""📊 DAILY RESULTS 📊
-🗓️ {stats['date']}
+🗓️ {stats.get('date', 'Today')}
 
-{res_txt}
+{results_txt}
 ━━━━━━━━━━━━━━━━━━
-✅ Wins: {stats['wins']}
-❌ Losses: {stats['losses']}
-💰 Profit: {sign}{prof} units
+✅ Wins: {wins}
+❌ Losses: {losses}
+💰 Profit: {sign}{profit} units
 
 📲 JOIN FOR TOMORROW 👇
-🔗 {self.tg}
+🔗 {self.telegram}
 
-#DailyResults #BettingTips #Profit"""
+#DailyResults #BettingTips #Profit #Football"""
+    
+    def _hashtags(self, risk, league, home, away):
+        tags = HASHTAGS.get(risk, [])[:4] + HASHTAGS.get('GENERAL', [])[:4]
+        # Clean team names for hashtags
+        l_tag = '#' + league.replace(' ', '').replace('-', '').replace('.', '')
+        h_tag = '#' + home.replace(' ', '').replace('-', '').replace('.', '')
+        a_tag = '#' + away.replace(' ', '').replace('-', '').replace('.', '')
+        
+        tags.append(l_tag)
+        tags.append(h_tag)
+        tags.append(a_tag)
+        
+        return ' '.join(tags[:15])
