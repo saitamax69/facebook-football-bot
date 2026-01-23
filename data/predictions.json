@@ -365,6 +365,19 @@
       "result": "WIN",
       "final_score": "1-0",
       "profit": 2.68
+    },
+    {
+      "id": "pred_20260123072841",
+      "date": "2026-01-23",
+      "post_number": 1,
+      "risk_level": "SAFE",
+      "league": "2025-26-ENGLISH-PREMIER-LEAGUE",
+      "home_team": "Fulham",
+      "away_team": "Brighton & Hove Albion",
+      "prediction": "Under 2.5 Goals",
+      "odds": 1.5,
+      "fixture_id": "eng.1_740822",
+      "status": "pending"
     }
   ]
 }
