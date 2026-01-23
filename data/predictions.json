@@ -377,7 +377,10 @@
       "prediction": "Under 2.5 Goals",
       "odds": 1.5,
       "fixture_id": "eng.1_740822",
-      "status": "pending"
+      "status": "settled",
+      "result": "WIN",
+      "final_score": "1-0",
+      "profit": 0.5
     },
     {
       "id": "pred_20260123093501",
@@ -390,7 +393,10 @@
       "prediction": "Over 1.5 Goals",
       "odds": 1.49,
       "fixture_id": "eng.1_740819",
-      "status": "pending"
+      "status": "settled",
+      "result": "LOSS",
+      "final_score": "1-1",
+      "profit": -1.0
     },
     {
       "id": "pred_20260123123056",
@@ -403,7 +409,10 @@
       "prediction": "Home Win",
       "odds": 1.75,
       "fixture_id": "eng.1_740823",
-      "status": "pending"
+      "status": "settled",
+      "result": "WIN",
+      "final_score": "1-0",
+      "profit": 0.75
     },
     {
       "id": "pred_20260123151543",
@@ -416,7 +425,10 @@
       "prediction": "Away Win",
       "odds": 1.81,
       "fixture_id": "eng.1_740825",
-      "status": "pending"
+      "status": "settled",
+      "result": "LOSS",
+      "final_score": "2-2",
+      "profit": -1.0
     },
     {
       "id": "pred_20260123182743",
@@ -429,7 +441,10 @@
       "prediction": "Home Win",
       "odds": 5.04,
       "fixture_id": "eng.1_740822",
-      "status": "pending"
+      "status": "settled",
+      "result": "LOSS",
+      "final_score": "2-2",
+      "profit": -1.0
     }
   ]
 }
