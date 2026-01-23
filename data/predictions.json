@@ -391,6 +391,19 @@
       "odds": 1.49,
       "fixture_id": "eng.1_740819",
       "status": "pending"
+    },
+    {
+      "id": "pred_20260123123056",
+      "date": "2026-01-23",
+      "post_number": 3,
+      "risk_level": "MODERATE",
+      "league": "2025-26-ENGLISH-PREMIER-LEAGUE",
+      "home_team": "Manchester City",
+      "away_team": "Wolverhampton Wanderers",
+      "prediction": "Home Win",
+      "odds": 1.75,
+      "fixture_id": "eng.1_740823",
+      "status": "pending"
     }
   ]
 }
