@@ -497,6 +497,19 @@
       "odds": 1.8,
       "fixture_id": "eng.1_748349",
       "status": "pending"
+    },
+    {
+      "id": "pred_20260124182445",
+      "date": "2026-01-24",
+      "post_number": 5,
+      "risk_level": "RISKY",
+      "league": "REGULAR-SEASON",
+      "home_team": "FC Cincinnati",
+      "away_team": "Atlanta United FC",
+      "prediction": "Draw",
+      "odds": 3.57,
+      "fixture_id": "eng.1_761440",
+      "status": "pending"
     }
   ]
 }
