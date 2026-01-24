@@ -484,6 +484,19 @@
       "odds": 1.8,
       "fixture_id": "eng.1_740825",
       "status": "pending"
+    },
+    {
+      "id": "pred_20260124151056",
+      "date": "2026-01-24",
+      "post_number": 4,
+      "risk_level": "MODERATE",
+      "league": "2025-26-LALIGA",
+      "home_team": "Villarreal",
+      "away_team": "Real Madrid",
+      "prediction": "BTTS Yes",
+      "odds": 1.8,
+      "fixture_id": "eng.1_748349",
+      "status": "pending"
     }
   ]
 }
