@@ -577,6 +577,19 @@
       "odds": 1.95,
       "fixture_id": "eng.1_748344",
       "status": "pending"
+    },
+    {
+      "id": "pred_20260125182509",
+      "date": "2026-01-25",
+      "post_number": 5,
+      "risk_level": "RISKY",
+      "league": "LEAGUE-PHASE",
+      "home_team": "Eintracht Frankfurt",
+      "away_team": "Tottenham Hotspur",
+      "prediction": "Draw",
+      "odds": 3.77,
+      "fixture_id": "eng.1_757788",
+      "status": "pending"
     }
   ]
 }
