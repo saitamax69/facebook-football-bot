@@ -551,6 +551,19 @@
       "odds": 1.5,
       "fixture_id": "eng.1_740820",
       "status": "pending"
+    },
+    {
+      "id": "pred_20260125122740",
+      "date": "2026-01-25",
+      "post_number": 3,
+      "risk_level": "MODERATE",
+      "league": "2025-26-ENGLISH-PREMIER-LEAGUE",
+      "home_team": "Newcastle United",
+      "away_team": "Aston Villa",
+      "prediction": "BTTS No",
+      "odds": 1.6,
+      "fixture_id": "eng.1_740824",
+      "status": "pending"
     }
   ]
 }
