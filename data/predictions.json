@@ -525,6 +525,19 @@
       "result": "WIN",
       "final_score": "0-0",
       "profit": 2.57
+    },
+    {
+      "id": "pred_20260125072423",
+      "date": "2026-01-25",
+      "post_number": 1,
+      "risk_level": "SAFE",
+      "league": "LEAGUE-PHASE",
+      "home_team": "Club Brugge",
+      "away_team": "Marseille",
+      "prediction": "Under 2.5 Goals",
+      "odds": 1.5,
+      "fixture_id": "eng.1_757787",
+      "status": "pending"
     }
   ]
 }
