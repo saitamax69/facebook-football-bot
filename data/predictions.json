@@ -538,6 +538,19 @@
       "odds": 1.5,
       "fixture_id": "eng.1_757787",
       "status": "pending"
+    },
+    {
+      "id": "pred_20260125092643",
+      "date": "2026-01-25",
+      "post_number": 2,
+      "risk_level": "SAFE",
+      "league": "2025-26-ENGLISH-PREMIER-LEAGUE",
+      "home_team": "Crystal Palace",
+      "away_team": "Chelsea",
+      "prediction": "Under 2.5 Goals",
+      "odds": 1.5,
+      "fixture_id": "eng.1_740820",
+      "status": "pending"
     }
   ]
 }
