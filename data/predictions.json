@@ -631,6 +631,19 @@
       "odds": 1.45,
       "fixture_id": "eng.1_740821",
       "status": "pending"
+    },
+    {
+      "id": "pred_20260126123130",
+      "date": "2026-01-26",
+      "post_number": 3,
+      "risk_level": "MODERATE",
+      "league": "2025-26-ITALIAN-SERIE-A",
+      "home_team": "Hellas Verona",
+      "away_team": "Udinese",
+      "prediction": "Over 1.5 Goals",
+      "odds": 1.7,
+      "fixture_id": "eng.1_737002",
+      "status": "pending"
     }
   ]
 }
