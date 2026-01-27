@@ -696,6 +696,19 @@
       "odds": 1.5,
       "fixture_id": "eng.1_746857",
       "status": "pending"
+    },
+    {
+      "id": "pred_20260127123152",
+      "date": "2026-01-27",
+      "post_number": 3,
+      "risk_level": "MODERATE",
+      "league": "2025-26-LIGUE-1",
+      "home_team": "Lens",
+      "away_team": "Le Havre AC",
+      "prediction": "BTTS Yes",
+      "odds": 1.8,
+      "fixture_id": "eng.1_746589",
+      "status": "pending"
     }
   ]
 }
