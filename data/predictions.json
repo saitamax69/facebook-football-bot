@@ -722,6 +722,19 @@
       "odds": 1.85,
       "fixture_id": "eng.1_746855",
       "status": "pending"
+    },
+    {
+      "id": "pred_20260127183318",
+      "date": "2026-01-27",
+      "post_number": 5,
+      "risk_level": "RISKY",
+      "league": "2025-26-GERMAN-BUNDESLIGA",
+      "home_team": "St. Pauli",
+      "away_team": "RB Leipzig",
+      "prediction": "Draw",
+      "odds": 3.73,
+      "fixture_id": "eng.1_746857",
+      "status": "pending"
     }
   ]
 }
