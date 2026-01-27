@@ -709,6 +709,19 @@
       "odds": 1.8,
       "fixture_id": "eng.1_746589",
       "status": "pending"
+    },
+    {
+      "id": "pred_20260127152057",
+      "date": "2026-01-27",
+      "post_number": 4,
+      "risk_level": "MODERATE",
+      "league": "2025-26-GERMAN-BUNDESLIGA",
+      "home_team": "Werder Bremen",
+      "away_team": "TSG Hoffenheim",
+      "prediction": "Away or Draw",
+      "odds": 1.85,
+      "fixture_id": "eng.1_746855",
+      "status": "pending"
     }
   ]
 }
